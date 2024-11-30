@@ -99,6 +99,9 @@ def login():
 def render_profile_page(name, rollnumber, email, phone_number, DOB, year):
 
     # Sidebar
+    current_dir = os.getcwd()
+    image_path = os.path.join(current_dir, "Elements", "Profile_Icon.png")
+    st.sidebar.image(image_path, width=120)
     st.sidebar.title(f"{name}")
     st.sidebar.selectbox(f"{rollnumber}", ["Settings", "About", "Sign Out"])
 
@@ -109,7 +112,8 @@ def render_profile_page(name, rollnumber, email, phone_number, DOB, year):
     st.write(f"**DOB:** {DOB}")
     st.write(f"**Year:** {year}")
 
-    st.button("TRACK EXPENSES")
+    if st.button("TRACK EXPENSES"):
+        st.session_state["current_page"] = "MY EXPENSES"
 
     if st.button("Back to Dashboard"):
         st.session_state["current_page"] = "Dashboard"
@@ -127,44 +131,96 @@ def render_dashboard_page(name, rollnumber):
     st.image(image_path, width=120)
 
     # Sidebar
+    current_dir = os.getcwd()
+    image_path = os.path.join(current_dir, "Elements", "Profile_Icon.png")
+    st.sidebar.image(image_path, width=120)
     st.sidebar.title(f"{name}")
     st.sidebar.selectbox(f"{rollnumber}", ["Settings", "About", "Sign Out"])
 
     st.title("Dashboard")
     st.write(f"### Welcome, {name}!")
-    st.markdown('<h1 class="header">Monthly Expenditure</h1>', unsafe_allow_html=True)
-    st.markdown('<h2 class="header">Services</h2>', unsafe_allow_html=True)
+    st.write(" ")
+
+    col11, col12 = st.columns(2)
+
+    with col11:
+        current_dir = os.getcwd()
+        image_path = os.path.join(current_dir, "Elements", "Campus.png")
+        st.image(image_path, caption="Campus", width=200)
+    
+    with col12:
+        current_dir = os.getcwd()
+        image_path = os.path.join(current_dir, "Elements", "Coupons.png")
+        st.image(image_path, caption="My Coupons", width=200)
+
+    #Services
+    st.markdown('<h1 class="header">Services</h2>', unsafe_allow_html=True)
+    st.write(" ")
+
+    col1, col2, col3 = st.columns(3)
+    col4, col5, col6 = st.columns(3)
+
+    #Canteen icon
+    with col1:
+        current_dir = os.getcwd()
+        image_path = os.path.join(current_dir, "Elements", "Canteen.png")
+        st.image(image_path, caption="Canteen", width=120)
+
+    #Stationery icon
+    with col2:
+        current_dir = os.getcwd()
+        image_path = os.path.join(current_dir, "Elements", "Stationery.png")
+        st.image(image_path, caption="Stationery", width=90)
+
+    #Library icon
+    with col3:
+        current_dir = os.getcwd()
+        image_path = os.path.join(current_dir, "Elements", "Library.png")
+        st.image(image_path, caption="Library", width=100)
+
+    #Sports icon
+    with col4:
+        current_dir = os.getcwd()
+        image_path = os.path.join(current_dir, "Elements", "Sports.png")
+        st.image(image_path, caption="Sports", width=100)
+
+    #Laundry icon
+    with col5:
+        current_dir = os.getcwd()
+        image_path = os.path.join(current_dir, "Elements", "Laundry.png")
+        st.image(image_path, caption="Laundry", width=100)
+
+    #Sports icon
+    with col6:
+        current_dir = os.getcwd()
+        image_path = os.path.join(current_dir, "Elements", "Events.png")
+        st.image(image_path, caption="Events", width=100)
+
 
     # Adding QR code button to navigate to payment overview
-    if st.button("QR Code"):
-        st.session_state["current_page"] = "Payment Overview"
+    if st.button("QR Code (Canteen)"):
+        st.session_state["current_page"] = "KMIT Canteen"
 
-# Function to render the Payment overview page
-def render_payment_overview(name, rollnumber):
+    if st.button("QR Code (Stationery)"):
+        st.session_state["current_page"] = "KMIT Stationery"
 
-    # Sidebar
+    
+# Function to render track the expenses
+def render_track_expenses(name, rollnumber):
+
+    #Sidebar
+    current_dir = os.getcwd()
+    image_path = os.path.join(current_dir, "Elements", "Profile_Icon.png")
+    st.sidebar.image(image_path, width=120)
     st.sidebar.title(f"{name}")
     st.sidebar.selectbox(f"{rollnumber}", ["Settings", "About", "Sign Out"])
 
-    st.title("Payment Overview")
-    st.write("Please enter the payment details below.")
+    st.title("MY EXPENSES")
+    st.write("### This Month")
 
-    # Form for transaction input
-    with st.form(key='transaction_form'):
-        recipient = st.text_input("Vendor: ")
-        amount_inr = st.number_input("Amount: ", min_value=0.01, format="%.2f")
-        submit_button = st.form_submit_button("PAY")
+    if st.button("Back to Profile"):
+        st.session_state["current_page"] = "Profile"
 
-    # Processes the transaction when the form is submitted
-    if submit_button:
-        if recipient and amount_inr > 0:
-            result = process_transaction(recipient, amount_inr)
-            st.success(result)
-        else:
-            st.error("Please fill in all the fields with valid information.")
-
-    if st.button("Back to Dashboard"):
-        st.session_state["current_page"] = "Dashboard"
 
 
 
@@ -186,11 +242,9 @@ def main():
             st.session_state["DOB"],
             st.session_state["year"],
         )
-    elif st.session_state["current_page"] == "Payment Overview":
-        render_payment_overview(st.session_state["name"], st.session_state["rollnumber"],)
+    elif st.session_state["current_page"] == "MY EXPENSES":
+        render_track_expenses(st.session_state["name"], st.session_state["rollnumber"],)
 
 # Runs the app
 if __name__ == "__main__":
     main()
-
-
