@@ -1,8 +1,8 @@
 # Nishkah
 
 /ˈniʃ.kɑː/\
-Noun: a gold coin\
-Verb: to measure\
+**Noun**: a gold coin\
+**Verb**: to measure
 
 ### Syntax Terror
 
