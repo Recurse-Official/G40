@@ -25,7 +25,7 @@ def authenticate_google_sheets():
             "https://www.googleapis.com/auth/drive",
         ]
 
-        #JSON credentials file
+        # JSON credentials file
         json_path = os.path.join(os.getcwd(), "credentials.json")
 
         creds = ServiceAccountCredentials.from_json_keyfile_name(json_path, scope)
@@ -50,11 +50,33 @@ def load_credentials():
     except Exception as e:
         st.error(f"Error loading credentials: {e}")
         return pd.DataFrame()
-    
+
 # Function to simulate the transaction
 def process_transaction(recipient, amount_inr):
     # Simulate the transaction process
     return f"Transaction to {recipient} for ₹{amount_inr:,.2f} has been processed successfully!"
+
+# Sidebar function to handle the navigation and sign-out functionality
+def render_sidebar(name, rollnumber):
+    current_dir = os.getcwd()
+    image_path = os.path.join(current_dir, "Elements", "Profile_Icon.png")
+    st.sidebar.image(image_path, width=120)
+    st.sidebar.title(f"{name}")
+    option = st.sidebar.selectbox(f"{rollnumber}", ["Settings", "About", "Sign Out"])
+
+    # Check if "Sign Out" is selected
+    if option == "Sign Out":
+        st.session_state["is_logged_in"] = False
+        st.session_state["name"] = None
+        st.session_state["rollnumber"] = None
+        st.session_state["email"] = None
+        st.session_state["phone_number"] = None
+        st.session_state["DOB"] = None
+        st.session_state["year"] = None
+        st.session_state["current_page"] = "Login"
+        st.success("You have been logged out successfully!")
+        return True  # Return True to indicate the user logged out
+    return False  # Return False if no sign out action
 
 # Login functionality
 def login():
@@ -99,11 +121,8 @@ def login():
 def render_profile_page(name, rollnumber, email, phone_number, DOB, year):
 
     # Sidebar
-    current_dir = os.getcwd()
-    image_path = os.path.join(current_dir, "Elements", "Profile_Icon.png")
-    st.sidebar.image(image_path, width=120)
-    st.sidebar.title(f"{name}")
-    st.sidebar.selectbox(f"{rollnumber}", ["Settings", "About", "Sign Out"])
+    if render_sidebar(name, rollnumber):
+        return  # Return after logging out
 
     st.title(f"{name}")
     st.write(f"### {rollnumber}")
@@ -131,11 +150,8 @@ def render_dashboard_page(name, rollnumber):
     st.image(image_path, width=120)
 
     # Sidebar
-    current_dir = os.getcwd()
-    image_path = os.path.join(current_dir, "Elements", "Profile_Icon.png")
-    st.sidebar.image(image_path, width=120)
-    st.sidebar.title(f"{name}")
-    st.sidebar.selectbox(f"{rollnumber}", ["Settings", "About", "Sign Out"])
+    if render_sidebar(name, rollnumber):
+        return  # Return after logging out
 
     st.title("Dashboard")
     st.write(f"### Welcome, {name}!")
@@ -147,82 +163,71 @@ def render_dashboard_page(name, rollnumber):
         current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Campus.png")
         st.image(image_path, caption="Campus", width=200)
-    
+
     with col12:
         current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Coupons.png")
         st.image(image_path, caption="My Coupons", width=200)
 
-    #Services
+    # Services
     st.markdown('<h1 class="header">Services</h2>', unsafe_allow_html=True)
     st.write(" ")
 
     col1, col2, col3 = st.columns(3)
     col4, col5, col6 = st.columns(3)
 
-    #Canteen icon
+    # Canteen icon
     with col1:
         current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Canteen.png")
         st.image(image_path, caption="Canteen", width=120)
 
-    #Stationery icon
+    # Stationery icon
     with col2:
         current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Stationery.png")
         st.image(image_path, caption="Stationery", width=90)
 
-    #Library icon
+    # Library icon
     with col3:
         current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Library.png")
         st.image(image_path, caption="Library", width=100)
 
-    #Sports icon
+    # Sports icon
     with col4:
         current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Sports.png")
         st.image(image_path, caption="Sports", width=100)
 
-    #Laundry icon
+    # Laundry icon
     with col5:
         current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Laundry.png")
         st.image(image_path, caption="Laundry", width=100)
 
-    #Sports icon
+    # Sports icon
     with col6:
         current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Events.png")
         st.image(image_path, caption="Events", width=100)
 
-
     # Adding QR code button to navigate to payment overview
-    if st.button("QR Code (Canteen)"):
+    if st.button("QR Code"):
         st.session_state["current_page"] = "KMIT Canteen"
 
-    if st.button("QR Code (Stationery)"):
-        st.session_state["current_page"] = "KMIT Stationery"
-
-    
 # Function to render track the expenses
 def render_track_expenses(name, rollnumber):
 
-    #Sidebar
-    current_dir = os.getcwd()
-    image_path = os.path.join(current_dir, "Elements", "Profile_Icon.png")
-    st.sidebar.image(image_path, width=120)
-    st.sidebar.title(f"{name}")
-    st.sidebar.selectbox(f"{rollnumber}", ["Settings", "About", "Sign Out"])
+    # Sidebar
+    if render_sidebar(name, rollnumber):
+        return  # Return after logging out
 
     st.title("MY EXPENSES")
     st.write("### This Month")
 
     if st.button("Back to Profile"):
         st.session_state["current_page"] = "Profile"
-
-
-
 
 # Main application logic
 def main():
