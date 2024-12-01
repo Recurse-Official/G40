@@ -1,5 +1,3 @@
-### A Project by Syntax Terror
-
 # Nishkah
 
 /ˈniʃ.kɑː/\
@@ -16,6 +14,9 @@ Student Transaction & Financial Management Interface
 * gspread library
 * oauth2 library
 
+## Execution
 ` ` `
 $ streamlit run login.py
 ` ` `
+
+### A Project by Syntax Terror
