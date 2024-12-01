@@ -50,7 +50,6 @@ def update_google_sheet(amount, sheet):
     
     st.success(f"Payment of ₹{amount} successful! Current Balance: ₹{new_balance}")
 
-
 # Streamlit UI for user input 
 def main():
     st.title("KMIT Canteen - Payment Portal")
@@ -79,11 +78,6 @@ def main():
             update_google_sheet(amount, sheet)
         else:
             st.warning("Please enter a positive amount for the transaction!")
-
-    if st.button("Go back to Dashboard"):
-        # This assumes the main dashboard is hosted on localhost:8501
-        st.session_state["current_page"] = "Dashboard"  # Use session state if integrated
-        st.markdown("[Return to Dashboard](http://localhost:8501)", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
