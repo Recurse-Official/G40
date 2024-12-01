@@ -57,7 +57,7 @@ def render_sidebar(name, rollnumber):
     image_path = os.path.join(current_dir, "Elements", "Profile_Icon.png")
     st.sidebar.image(image_path, width=120)
     st.sidebar.title(f"{name}")
-    option = st.sidebar.selectbox(f"{rollnumber}", ["Settings", "About", "Sign Out","Dashboard",])
+    option = st.sidebar.selectbox(f"{rollnumber}", ["Settings", "About", "Sign Out",])
 
     # Check if "Sign Out" is selected
     if option == "Sign Out":
@@ -108,7 +108,7 @@ def login():
                 st.session_state["year"] = user_record.iloc[0]["year"]
                 st.session_state["current_page"] = "Dashboard"
                 st.success("Login successful!")
-                st.write("Click on the login button again to enter your dashboard")
+                st.write("Click on the login button again to enter into your dashboard")
             else:
                 st.error("Invalid password.")
 
@@ -247,8 +247,28 @@ def render_canteen(name, rollnumber):
     
     st.title("CANTEEN")
 
-    st.write("Your Top Picks")
-    st.write("Bestsellers")
+    st.write("### Your Top Picks")
+    st.number_input("Peri Peri Fries: 80 Nishkah", min_value=0, step=1)
+    st.number_input("Aloo Toast: 40 Nishkah", min_value=0, step=1)
+    st.number_input("Tawa Pav: 60 Nishkah", min_value=0, step=1)
+
+    st.write(" ")
+    st.write(" ")
+
+    st.write("### Bestsellers")
+    st.number_input("Manchuria: 40 Nishkah", min_value=0, step=1)
+    st.number_input("Mix Veg Pasta: 50 Nishkah", min_value=0, step=1)
+    st.number_input("Fried Rice: 40 Nishkah", min_value=0, step=1)
+    st.number_input("Pav Bhaji: 60 Nishkah", min_value=0, step=1)
+    st.number_input("Paani Puri: 30 Nishkah", min_value=0, step=1)
+
+    st.write(" ")
+    st.write(" ")
+
+    st.button("PROCEED")
+
+    st.write(" ")
+    st.write(" ")
 
     if st.button("Back to Dashboard"):
         st.session_state["current_page"] = "Dashboard"
@@ -262,8 +282,28 @@ def render_stationery(name, rollnumber):
     
     st.title("STATIONERY")
 
-    st.write("Frequently purchased")
-    st.write("Bestsellers")
+    st.write("### Frequently purchased")
+    st.number_input("200 Pages Long Unruled Notebook: 40 Nishkah", min_value=0, step=1)
+    st.number_input("Colour Xerox (per page): 05 Nishkah", min_value=0, step=1)
+    st.number_input("Pentel Energel Black Refill: 20 Nishkah", min_value=0, step=1)
+
+    st.write(" ")
+    st.write(" ")
+
+    st.write("### Bestsellers")
+    st.number_input("Lab Manual: 100 Nishkah", min_value=0, step=1)
+    st.number_input("Geometric Box: 120 Nishkah", min_value=0, step=1)
+    st.number_input("Graph Sheet: 08 Nishkah", min_value=0, step=1)
+    st.number_input("30cm Ruler: 10 Nishkah", min_value=0, step=1)
+    st.number_input("Lab Coat (Blue/White): 90 Nishkah", min_value=0, step=1)
+
+    st.write(" ")
+    st.write(" ")
+
+    st.button("PROCEED")
+
+    st.write(" ")
+    st.write(" ")
 
     if st.button("Back to Dashboard"):
         st.session_state["current_page"] = "Dashboard"
