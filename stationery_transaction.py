@@ -52,14 +52,14 @@ def update_google_sheet(amount, sheet):
 
 # Streamlit UI for user input 
 def main():
-    st.title("KMIT Canteen - Payment Portal")
+    st.title("KMIT Stationery - Payment Portal")
     
     # Authenticate and get the Google Sheets client
     client = authenticate_google_sheets()
     
     # Open the specific Google Sheet (replace with your actual Google Sheet name)
     try:
-        sheet = client.open("Nishkah").worksheet("Canteen_transaction")
+        sheet = client.open("Nishkah").worksheet("Stationery_transaction")
     except Exception as e:
         st.error(f"Error accessing the Google Sheet: {e}")
         return
@@ -78,6 +78,12 @@ def main():
             update_google_sheet(amount, sheet)
         else:
             st.warning("Please enter a positive amount for the transaction!")
+
+    if st.button("Go back to Dashboard"):
+        # This assumes the main dashboard is hosted on localhost:8501
+        st.session_state["current_page"] = "Dashboard"  # Use session state if integrated
+        st.markdown("[Return to Dashboard](http://localhost:8501)", unsafe_allow_html=True)
+
 
 if __name__ == "__main__":
     main()

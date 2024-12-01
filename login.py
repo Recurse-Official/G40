@@ -51,18 +51,13 @@ def load_credentials():
         st.error(f"Error loading credentials: {e}")
         return pd.DataFrame()
 
-# Function to simulate the transaction
-def process_transaction(recipient, amount_inr):
-    # Simulate the transaction process
-    return f"Transaction to {recipient} for ₹{amount_inr:,.2f} has been processed successfully!"
-
 # Sidebar function to handle the navigation and sign-out functionality
 def render_sidebar(name, rollnumber):
     current_dir = os.getcwd()
     image_path = os.path.join(current_dir, "Elements", "Profile_Icon.png")
     st.sidebar.image(image_path, width=120)
     st.sidebar.title(f"{name}")
-    option = st.sidebar.selectbox(f"{rollnumber}", ["Settings", "About", "Sign Out"])
+    option = st.sidebar.selectbox(f"{rollnumber}", ["Settings", "About", "Sign Out","Dashboard",])
 
     # Check if "Sign Out" is selected
     if option == "Sign Out":
@@ -139,8 +134,12 @@ def render_profile_page(name, rollnumber, email, phone_number, DOB, year):
 
 # Function to render the Dashboard page
 def render_dashboard_page(name, rollnumber):
-    cols = st.columns([9, 1])
+    cols = st.columns([8, 1])
     with cols[1]:
+        # Nishkah logo
+        current_dir = os.getcwd()
+        image_path = os.path.join(current_dir, "Elements", "Profile_Icon.png")
+        st.image(image_path, width=80)
         if st.button("Profile"):
             st.session_state["current_page"] = "Profile"
 
@@ -162,7 +161,7 @@ def render_dashboard_page(name, rollnumber):
     with col11:
         current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Campus.png")
-        st.image(image_path, caption="Campus", width=200)
+        st.image(image_path, caption="Campus", width=220)
 
     with col12:
         current_dir = os.getcwd()
@@ -176,45 +175,55 @@ def render_dashboard_page(name, rollnumber):
     col1, col2, col3 = st.columns(3)
     col4, col5, col6 = st.columns(3)
 
-    # Canteen icon
+    # Service icons as buttons
     with col1:
-        current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Canteen.png")
-        st.image(image_path, caption="Canteen", width=120)
-
-    # Stationery icon
+        st.image(image_path, width=100)
+        if st.button("Canteen", key="canteen"):
+            st.session_state["current_page"] = "CANTEEN"
     with col2:
-        current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Stationery.png")
-        st.image(image_path, caption="Stationery", width=90)
-
-    # Library icon
+        st.image(image_path, width=75)
+        if st.button("Stationery", key="stationery"):
+            st.session_state["current_page"] = "STATIONERY"
     with col3:
-        current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Library.png")
-        st.image(image_path, caption="Library", width=100)
-
-    # Sports icon
+        st.image(image_path, width=80)
+        if st.button("Library", key="library"):
+            st.session_state["current_page"] = "Library"
     with col4:
-        current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Sports.png")
-        st.image(image_path, caption="Sports", width=100)
-
-    # Laundry icon
+        st.image(image_path, width=90)
+        if st.button("Sports", key="sports"):
+            st.session_state["current_page"] = "Sports"
     with col5:
-        current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Laundry.png")
-        st.image(image_path, caption="Laundry", width=100)
-
-    # Sports icon
+        st.image(image_path, width=90)
+        if st.button("Laundry", key="laundry"):
+            st.session_state["current_page"] = "Laundry"
     with col6:
-        current_dir = os.getcwd()
         image_path = os.path.join(current_dir, "Elements", "Events.png")
-        st.image(image_path, caption="Events", width=100)
+        st.image(image_path, width=90)
+        if st.button("Events", key="events"):
+            st.session_state["current_page"] = "Events"
+
+    st.write(" ")
+    st.write(" ")
+    st.write(" ")
+    st.write(" ")
 
     # Adding QR code button to navigate to payment overview
     if st.button("QR Code"):
-        st.session_state["current_page"] = "KMIT Canteen"
+
+        #canteen payment portal: runs on .8504
+        current_dir = os.getcwd()
+        image_path = os.path.join(current_dir, "QR_code", "canteen_qr.png")
+        st.image(image_path,caption="Canteen", width=300)
+
+        #stationery payment portal: runs on .8502
+        current_dir = os.getcwd()
+        image_path = os.path.join(current_dir, "QR_code", "stationery_qr.png")
+        st.image(image_path,caption="Stationery", width=300)
 
 # Function to render track the expenses
 def render_track_expenses(name, rollnumber):
@@ -228,6 +237,36 @@ def render_track_expenses(name, rollnumber):
 
     if st.button("Back to Profile"):
         st.session_state["current_page"] = "Profile"
+
+# Function to render the Canteen page
+def render_canteen(name, rollnumber):
+
+    #Sidebar
+    if render_sidebar(name, rollnumber):
+        return  # Return after logging out
+    
+    st.title("CANTEEN")
+
+    st.write("Your Top Picks")
+    st.write("Bestsellers")
+
+    if st.button("Back to Dashboard"):
+        st.session_state["current_page"] = "Dashboard"
+
+# Function to render the Stationery page
+def render_stationery(name, rollnumber):
+
+    #Sidebar
+    if render_sidebar(name, rollnumber):
+        return  # Return after logging out
+    
+    st.title("STATIONERY")
+
+    st.write("Frequently purchased")
+    st.write("Bestsellers")
+
+    if st.button("Back to Dashboard"):
+        st.session_state["current_page"] = "Dashboard"
 
 # Main application logic
 def main():
@@ -249,6 +288,10 @@ def main():
         )
     elif st.session_state["current_page"] == "MY EXPENSES":
         render_track_expenses(st.session_state["name"], st.session_state["rollnumber"],)
+    elif st.session_state["current_page"] == "CANTEEN":
+        render_canteen(st.session_state["name"], st.session_state["rollnumber"],)
+    elif st.session_state["current_page"] == "STATIONERY":
+        render_stationery(st.session_state["name"], st.session_state["rollnumber"],)
 
 # Runs the app
 if __name__ == "__main__":
